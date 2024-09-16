@@ -13,6 +13,7 @@ public class ConnectionHandler {
 
     private static final String SERVER_NAME = "Simple DEA Webserver";
     private static final String HTTP_STATUS_200 = "200 OK";
+    private static final String HTTP_STATUS_201 = "201 CREATED";
     private static final String HTTP_STATUS_404 = "404 NOT FOUND";
     private static final String HTTP_STATUS_501 = "501 NOT IMPLEMENTED";
     private static final String HTTP_STATUS_505 = "505 HTTP VERSION NOT SUPPORTED";
@@ -80,7 +81,11 @@ public class ConnectionHandler {
     }
 
     private void checkForUnsupportedMethods(final BufferedWriter outputStreamWriter, String[] startLineTokens) throws IOException {
-        if (!"GET".equals(startLineTokens[0])) {
+    if("POST".equals(startLineTokens[0])){
+        outputStreamWriter.write(generateHeader(HTTP_STATUS_201, null));
+        outputStreamWriter.newLine();
+        outputStreamWriter.flush();
+    } else if (!"GET".equals(startLineTokens[0])) {
             outputStreamWriter.write(generateHeader(HTTP_STATUS_501, null));
             outputStreamWriter.newLine();
             outputStreamWriter.flush();
